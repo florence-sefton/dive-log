@@ -49,18 +49,29 @@ def line_is_diveend(l):
         return False
 
 
+## Find Observations
+def line_is_observation(l):
+    obs_line = re.match(r'^##+ Obs:(.*)', l)
+    if obs_line:
+        is_obs = obs_line[1]
+        return is_obs
+    else:
+        return False
+
+
 #FUNCTION TO PRODUCE DATFRAME WITH DIVE INFO
 def extract_dives(input_file):
     log = open(input_file).read().split("\n")
     days_data = []
     start_data = []
-    end_data = []
+    obs_data = []
     
     this_date = [] 
     brand_new_day = ""
     this_place  = []
     this_start = []
     this_end = []
+    this_obs = []
     
     for line in log:
         #FIND DATE
@@ -84,12 +95,19 @@ def extract_dives(input_file):
         if this_start and this_end:
             start_data.append({"Date": this_date, "Dive Start": this_start, "Dive End": this_end})
    
-   
+        #FIND OBSERVATIONS
+        this_obs = line_is_observation(line)
+        if this_obs:
+            obs_data.append({"Date": this_date, "Observations": this_obs})
+    
+
     # Put it together
     df = pd.DataFrame(days_data)
     start = pd.DataFrame(start_data)
-    #end = pd.DataFrame(end_data)
-    df = df.merge(start, how = "outer", on = "Date")
+    obs = pd.DataFrame(obs_data)
+    print(obs)
+    df = obs.merge(df, how = "outer", on = "Date") #obs no good, creating double ups - need to fix
+    df =  df.merge(start, how = "outer", on = "Date")
     return df    
 
 # Run the function
