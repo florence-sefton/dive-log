@@ -154,10 +154,6 @@ def summarise_obs(input_file):
     fig = px.pie(df2, values='counts', names='ObCat', title='Things I have seen:')
     return(df)
 
-
-
-
-
 #FUNCTION TO MAKE A MAP
 def map_dives(input_file):
     geolocator = Nominatim(user_agent="your_app_name", timeout = 100)
@@ -199,7 +195,7 @@ import plotly.express as px
 
 
 app = dash.Dash(__name__)
-server = app.server
+#server = app.server
 
 #markdown text
 markdown_text = '''
@@ -209,18 +205,19 @@ app.layout = html.Div([
     #html, css (css style)
         html.H1("Flo's Dive Log", style = {'color': 'blue', 'fontsize': 40}), #.H1 header 1, remember to spell colour wrong
     #markdown
-        dcc.Markdown(markdown_text),
-        dcc.Tabs([
-           
-            dcc.Tab(label='Seen On Dives', children=[
-                 #make droopdown, to select which Obcat value to view a pie chart break down for
-            dcc.Dropdown(options=dives.ObCat.unique(), value = 'Shark', id = 'dropdown'),
-            #create elemenent for the pie chart linked do dropdown
-                
-                dcc.Graph( id='graph-with-dropdown'),
-                 
-              ]),
-            dcc.Tab(label = "Dive Map", children = [
+        dcc.Markdown(markdown_text,),
+
+        
+            dcc.Tabs([
+                dcc.Tab(label='Seen On Dives', children=[
+                     #make droopdown, to select which Obcat value to view a pie chart break down for
+                   dcc.Graph(figure = (px.pie(dives, names='ObCat', title= "Things I've seen", color_discrete_sequence=px.colors.sequential.Aggrnyl))), 
+                     dcc.Dropdown(options=dives.ObCat.unique(), value = 'Shark', id = 'dropdown'),
+                     #create elemenent for the pie chart linked do dropdown
+                     dcc.Graph( id='graph-with-dropdown'),  
+                     ]),
+
+                dcc.Tab(label = "Dive Map", children = [
                 dcc.Graph(figure = mapdata),
             ]),
             dcc.Tab(label = "Dive data", children = [
@@ -230,7 +227,7 @@ app.layout = html.Div([
                 labels = {"Date" : "Year", "counts": "Number of Dives"}, title = "Dives per year:", 
                 color_discrete_sequence=px.colors.sequential.Aggrnyl)),
 
-                dcc.Graph(figure = px.histogram(dives, x = "Dive Time", nbins = 10, title = "Dive time", color_discrete_sequence = px.colors.sequential.Aggrnyl)),
+                dcc.Graph(figure = px.histogram(dives, x = "Dive Time", nbins = 10, labels = {'count':'Number of dives', "Dive Time":'Dive Time (minutes)'}, template = "simple_white", title = "Dive time distribution", color_discrete_sequence = px.colors.sequential.Aggrnyl, )),
             ]),
             dcc.Tab(label = 'Dive Log', children = [
                 dash_table.DataTable(data = dives.to_dict('records'), columns=[{'name': i, 'id': i} for i in dives.columns[0:4]]),
@@ -254,7 +251,7 @@ def update_figure(ObCat):
 if __name__ == "__main__":
     app.run_server(debug=True) #debug true give useful debug message 
 
-#ctr c to quite
+#ctr c to quit
 
 
 
