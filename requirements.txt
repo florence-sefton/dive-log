@@ -1,7 +1,7 @@
 dash==2.18.2
 gunicorn
 pandas
-sys
+
 matplotlib.pyplot
 numpy
 datetime
