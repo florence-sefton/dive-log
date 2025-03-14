@@ -1,9 +1,6 @@
 dash==2.18.2
 gunicorn
 pandas
-
-matplotlib.pyplot
 numpy
-datetime
-plotly.express
-geopy.geocoders
+plotly
+geopy
