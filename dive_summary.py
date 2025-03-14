@@ -199,6 +199,7 @@ import plotly.express as px
 
 
 app = dash.Dash(__name__)
+server = app.server
 
 #markdown text
 markdown_text = '''

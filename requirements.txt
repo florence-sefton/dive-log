@@ -1,0 +1,10 @@
+dash==2.18.2
+gunicorn
+re
+pandas
+sys
+matplotlib.pyplot
+numpy
+datetime
+plotly.express
+geopy.geocoders
