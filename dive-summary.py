@@ -142,11 +142,11 @@ df3 = extract_dives("dive-log.md")
 #Categorise Obs
 #  or row["Observations"] == ' '
 def categoriseobs(row):
-        if row["Observations"] == ' whitetip'  or row["Observations"] == ' leopard shark' or  row["Observations"] == ' blacktip' or row["Observations"] == ' tawny nurse shark' or row["Observations"] == ' wobbegong' or row["Observations"] == ' whale shark' or row["Observations"] == 'grey reef' or row["Observations"] == ' wobbegong':
+        if row["Observations"] == ' whitetip'  or row["Observations"] == ' leopard shark' or  row["Observations"] == ' blacktip' or row["Observations"] == ' tawny nurse shark' or row["Observations"] == ' wobbegong' or row["Observations"] == ' whale shark' or row["Observations"] == 'grey reef shark' or row["Observations"] == ' wobbegong':
             return "Shark"
         elif row["Observations"]== ' octopus' or row["Observations"] == ' cuttlefish' or row["Observations"] == ' squid' or row["Observations"] == ' octopus':  
             return "Cephlapod"
-        elif row["Observations"] == ' whitespot eagle ray' or row["Observations"] == ' blue spot lagoon ray' or row["Observations"] == ' manta'or row["Observations"] == ' eagle ray':
+        elif row["Observations"] == ' whitespot eagle ray' or row["Observations"] == ' bluespot lagoon ray' or row["Observations"] == ' manta'or row["Observations"] == ' eagle ray':
             return "Ray"
         elif row["Observations"] == ' green turtle' or row["Observations"] == ' hawksbill Turtle' or row["Observations"] == ' turtle':
             return "Turtle"
@@ -156,7 +156,7 @@ def categoriseobs(row):
             return "Maori Wrasse"
         elif row["Observations"] == ' CoTS':
             return "CoTS"
-        elif row["Observations"] == ' clown' or row["Observations"] == ' clownfish' or row["Observations"] == ' nemo':
+        elif row["Observations"] == ' clown' or row["Observations"] == ' clarks aneomonefish' or row["Observations"] == ' tomato anemonefish'or row["Observations"] == ' nemo':
             return "Anemone Fish"
         elif row["Observations"] == ' nudi branch' or row["Observations"] == ' sea snake':
             return "Other"
@@ -197,7 +197,8 @@ def map_dives(input_file):
         fitbounds = "locations"
     )
     
-    fig.update_traces(marker=dict(size=11, color = 'rgb(237, 239, 93)'))
+    fig.update_traces(marker=dict(size=11, color = 'rgb(237, 239, 93)',  line=dict(width=2,
+                                        color='rgb(57, 171, 126)')))
     return(fig)
 
 
@@ -217,11 +218,11 @@ import plotly.express as px
 
 app = dash.Dash(__name__)
 #switch off server to run in vs code, on to run for deployment
-server = app.server
+#server = app.server
 
 #markdown text
 markdown_text = '''
-This dashboard displays data from my recreational dive log. Data is recorded in a markdown file. The script that read the file, and creates the dashboard is on GitHub.
+This dashboard displays data from my recreational dive log. Dive log data is recorded in a markdown file. The script that reads dive data file, and creates the dashboard is on GitHub (https://github.com/florence-sefton/dive-log).
 '''
 app.layout = html.Div([
     #html, css (css style)
@@ -242,16 +243,19 @@ app.layout = html.Div([
                 dcc.Graph(figure = mapfigure),
             ]),
             dcc.Tab(label = "Dive data",  style = {'color': 'rgb(36, 86, 104)'}, children = [
+                #frequency histogram plotting dive times
+                dcc.Graph(figure = px.histogram(dives, x = "Dive Time", nbins = 15, 
+                labels = { "Dive Time":'Dive Time (minutes)', "count":  'Number of dives'}, 
+                template = "simple_white", title = "Dive time distribution:", 
+                color_discrete_sequence = px.colors.sequential.Aggrnyl, )),
+                #bar plot showing number of dives per year
                 dcc.Graph(figure = px.bar(dives.groupby(dives.Date.dt.year).size().reset_index(name='counts'), 
                 x='Date', y = 'counts', 
                 template = "simple_white", 
                 labels = {"Date" : "Year", "counts": "Number of Dives"}, title = "Dives per year:", 
                 color_discrete_sequence=px.colors.sequential.Aggrnyl)),
 
-                dcc.Graph(figure = px.histogram(dives, x = "Dive Time", nbins = 15, 
-                labels = { "Dive Time":'Dive Time (minutes)', "count":  'Number of dives'}, 
-                template = "simple_white", title = "Dive time distribution:", 
-                color_discrete_sequence = px.colors.sequential.Aggrnyl, )),
+                
                 #dcc.Graph(figure = px.scatter(dives, x = "Depth", y = "Dive Time"))
                 
                 
