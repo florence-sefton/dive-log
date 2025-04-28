@@ -218,7 +218,7 @@ import plotly.express as px
 
 app = dash.Dash(__name__)
 #switch off server to run in vs code, on to run for deployment
-#server = app.server
+server = app.server
 
 #markdown text
 markdown_text = '''
