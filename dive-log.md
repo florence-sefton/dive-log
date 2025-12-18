@@ -169,7 +169,7 @@
 ## Obs: whitetip
 
 # 13-10-2022
-## Location: -16.788342, 146.272205
+## Location: Milln  Reef,  Great Barrier Reef
 ## Dive 1: 7:19 - 7:58, 17m
 ## Obs: None
 ## Dive 2: 11:29 -  12:04, 17m
@@ -179,7 +179,26 @@
 ## Dive 4: 19:37 - 20:14, 11m
 ## Obs: green turtle
 
+# 14-03-2022
+## Location: Flynn Reef, Great Barrier Reef,  Cairns, Queensland
+## Dive 1: 6:18 - 6:54, 29m
+## Obs: bumphead,  barracuda
+## Dive 2: 9:02 - 9:40, 16m
+## Obs:  nemo
+## Dive 3: 11:26 - 11:57, 8.5m
+## Obs:  GBR anemone,  red  and black anemone
 
+# 19-03-2022
+## Location: Milln  Reef,  Queensland
+## Dive 1: 14:20 - 14:47, 8.2m
+## Obs: none
+## Dive 2: 16:46 - 17:08, 10.5m
+## Obs: none
+
+# 20-10-2022
+## Location: Milln Reef,  GBR
+## Dive 1: 7:18 - 7:49, 11m
+## Obs: moree, female maori wrasse
 
 
 
@@ -190,11 +209,19 @@
 ## Dive 2: 12:30 - 13:25, 15m
 ## Obs: Moray, whitetip, maori wrasse
 ## Dive 3: 14:20 - 15:05, 17m
+## Obs: none
 
 # 17-09-2023
-## Location: Noli, Italy
+## Location: Via Aurelia, 52, 17026 Noli SV, Italy
 ## Dive 1: 11:08 - 12:10, 28m
 ## Obs: moray, nudi branch
 ## Dive 2: 14:40 - 15:33, 19.5m
 ## Obs: octopus, moray
+
+#  29-10-2025
+## Location: Andifli, 07580 Kaş/Antalya, Türkiye
+## Dive 1: 10:00 - 10:54, 20m
+## Obs: green turtle, loggerhead turtle, grouper, nudibranch
+## Dive 2: 12:10 - 13:07, 16.9m
+## Obs: Moray, pufferfish
 

@@ -122,19 +122,19 @@ def extract_dives(input_file):
     obs = pd.DataFrame(obs_data)
     depth = pd.DataFrame(depth_data)
     df =  df.merge(start, how = "outer", on = "Date")
-    df['Dive End'] = pd.to_datetime(df['Dive End'])
-    df['Dive Start'] = pd.to_datetime(df['Dive Start'])
+    df['Dive End'] = pd.to_datetime(df['Dive End'], format ="%H:%M") #, format ="%H:%M"
+    df['Dive Start'] = pd.to_datetime(df['Dive Start'], format ="%H:%M")
     df['Dive Time'] = (df['Dive End'] - df['Dive Start'])#.total_seconds()/3600
     df['Dive Time'] = df['Dive Time'].astype(int)/60000000000
     df["Observations"] = obs["Observations"]
     df['Depth'] = depth['Depth']
     return df 
 
-
+    print(df)
 
 # Run extract dives to create dataframe from dive log data.
 dives = extract_dives("dive-log.md")
-print(dives)
+
 df3 = extract_dives("dive-log.md")
 
 
@@ -181,11 +181,12 @@ def map_dives(input_file):
     df3["Place_Loc"] = df3["Place"].apply(lambda x: geolocator.geocode(x)) #applies geolocator to Place names, finds their location
     df3 = df3.dropna() # Drop rows with missing or invalid values in the 'mag' column
     # I would  like to print a list of places that get dropped from this list so I can fix them in the log
-    print("Locations", df3)
-    df3["Place_Lat"] = df3["Place_Loc"].apply(lambda x: (x.latitude))
+   
+
+    df3["Place_Lat"] = df3["Place_Loc"].apply(lambda x: x.latitude)
     df3["Place_Lon"] = df3["Place_Loc"].apply(lambda x: x.longitude)
-    
-    fig = px.scatter_geo(df3, lat='Place_Lat', lon='Place_Lon',
+    print(df3)
+    fig = px.scatter_geo(df3, lat="Place_Lat", lon='Place_Lon',
                      hover_name='Place', 
                      title='Dive Locations', width=1500, height=750, )
 
@@ -217,8 +218,8 @@ from dash import dcc, html, Output, Input, dash_table
 import plotly.express as px
 
 app = dash.Dash(__name__)
-#switch off server to run in vs code, on to run for deployment
-server = app.server
+#switch off (with comment) server to run in vs code, on to run for deployment
+#server = app.server
 
 #markdown text
 markdown_text = '''
@@ -230,6 +231,9 @@ app.layout = html.Div([
     #markdown
         dcc.Markdown(markdown_text,  style = {'color': 'rgb(15, 114, 121)','textAlign': 'center'}),
             dcc.Tabs([
+                dcc.Tab(label = "Dive Map",  style = {'color': 'rgb(36, 86, 104)'}, children = [
+                dcc.Graph(figure = mapfigure),
+            ]),
                 dcc.Tab(label='Seen On Dives', style = {'color': 'rgb(36, 86, 104)'}, children=[
                      #make droopdown, to select which Obcat value to view a pie chart break down for
                     dcc.Graph(figure = (px.pie(obs, names='ObCat', title= "Things I've seen", color_discrete_sequence=px.colors.sequential.Aggrnyl))), 
@@ -239,9 +243,7 @@ app.layout = html.Div([
                      dcc.Graph( id='graph-with-dropdown'),  
                      ]),
 
-                dcc.Tab(label = "Dive Map",  style = {'color': 'rgb(36, 86, 104)'}, children = [
-                dcc.Graph(figure = mapfigure),
-            ]),
+                
             dcc.Tab(label = "Dive data",  style = {'color': 'rgb(36, 86, 104)'}, children = [
                 #frequency histogram plotting dive times
                 dcc.Graph(figure = px.histogram(dives, x = "Dive Time", nbins = 15, 
@@ -285,6 +287,7 @@ if __name__ == "__main__":
     app.run_server(debug=True) #debug true give useful debug message 
 
 #ctr c to quit
+
 
 
 
