@@ -129,7 +129,7 @@ df3 = extract_dives("dive-log.md")
 #FUNCTIONs TO LOOK AT OBSERVATIONS
 #Categorise Obs
 def categoriseobs(row):
-        if row["Observations"] == ' Whitetip'  or row["Observations"] == ' Blacktip':
+        if row["Observations"] == ' Whitetip'  or row["Observations"] == ' Blacktip' or row["Observations"] == ' Hammerhead':
             return "Shark"
         elif row["Observations"]== ' Octopus' or row["Observations"] == ' Cuttlefish' or row["Observations"] == ' squid':  
             return "Cephlapod"
@@ -203,7 +203,7 @@ server = app.server
 
 #markdown text
 markdown_text = '''
-This dashboard displays data from dive log.
+Below is  dive log data. 
 '''
 app.layout = html.Div([
     #html, css (css style)

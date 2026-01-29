@@ -142,11 +142,11 @@ df3 = extract_dives("dive-log.md")
 #Categorise Obs
 #  or row["Observations"] == ' '
 def categoriseobs(row):
-        if row["Observations"] == ' whitetip'  or row["Observations"] == ' leopard shark' or  row["Observations"] == ' blacktip' or row["Observations"] == ' tawny nurse shark' or row["Observations"] == ' wobbegong' or row["Observations"] == ' whale shark' or row["Observations"] == 'grey reef shark' or row["Observations"] == ' wobbegong':
+        if row["Observations"] == ' whitetip' or row["Observations"] == ' hammerhead' or row["Observations"] == ' leopard shark' or  row["Observations"] == ' blacktip' or row["Observations"] == ' tawny nurse shark' or row["Observations"] == ' wobbegong' or row["Observations"] == ' whale shark' or row["Observations"] == 'grey reef shark':
             return "Shark"
         elif row["Observations"]== ' octopus' or row["Observations"] == ' cuttlefish' or row["Observations"] == ' squid' or row["Observations"] == ' octopus':  
             return "Cephlapod"
-        elif row["Observations"] == ' whitespot eagle ray' or row["Observations"] == ' bluespot lagoon ray' or row["Observations"] == ' manta'or row["Observations"] == ' eagle ray':
+        elif row["Observations"] == ' whitespot eagle ray' or row["Observations"] == ' bluespot lagoon ray' or row["Observations"] == ' manta'or row["Observations"] == ' eagle ray'  or row["Observations"] == ' mobula':
             return "Ray"
         elif row["Observations"] == ' green turtle' or row["Observations"] == ' hawksbill Turtle' or row["Observations"] == ' turtle':
             return "Turtle"
@@ -179,6 +179,7 @@ def map_dives(input_file):
     geolocator = Nominatim(user_agent="your_app_name", timeout = 100)
     df3 = input_file
     df3["Place_Loc"] = df3["Place"].apply(lambda x: geolocator.geocode(x)) #applies geolocator to Place names, finds their location
+    print("Couldn't locate:",  df3["Place_Loc"] == "None")
     df3 = df3.dropna() # Drop rows with missing or invalid values in the 'mag' column
     # I would  like to print a list of places that get dropped from this list so I can fix them in the log
    
@@ -206,6 +207,7 @@ def map_dives(input_file):
 #['rgb(36, 86, 104)', 'rgb(15, 114, 121)', 'rgb(13, 143, 129)', 'rgb(57, 171, 126)', 'rgb(110, 197, 116)', 'rgb(169, 220, 103)', 'rgb(237, 239, 93)']
 
 obs = summarise_obs(dives)
+print(obs)
 mapfigure = map_dives(df3) #runs on df3 rather than dives because map function doesn't like dives dataframe for some reason
 #new = old.filter(['A','B','D'], axis=1)
 dives_simple = dives.filter(["Date", "Place", "Dive Time", "Depth"])
@@ -219,7 +221,7 @@ import plotly.express as px
 
 app = dash.Dash(__name__)
 #switch off (with comment) server to run in vs code, on to run for deployment
-#server = app.server
+server = app.server
 
 #markdown text
 markdown_text = '''
@@ -236,16 +238,16 @@ app.layout = html.Div([
             ]),
                 dcc.Tab(label='Seen On Dives', style = {'color': 'rgb(36, 86, 104)'}, children=[
                      #make droopdown, to select which Obcat value to view a pie chart break down for
-                    dcc.Graph(figure = (px.pie(obs, names='ObCat', title= "Things I've seen", color_discrete_sequence=px.colors.sequential.Aggrnyl))), 
+                    #dcc.Graph(figure = (px.pie(obs, names='ObCat', title= "Things I've seen", color_discrete_sequence=px.colors.sequential.Aggrnyl))), 
                     
                     dcc.Dropdown(options=obs.ObCat.unique(), value = 'Shark', id = 'dropdown'),
                      #create elemenent for the pie chart linked do dropdown
                      dcc.Graph( id='graph-with-dropdown'),  
                      ]),
 
-                
-            dcc.Tab(label = "Dive data",  style = {'color': 'rgb(36, 86, 104)'}, children = [
+                dcc.Tab(label = "Dive data",  style = {'color': 'rgb(36, 86, 104)'}, children = [
                 #frequency histogram plotting dive times
+                
                 dcc.Graph(figure = px.histogram(dives, x = "Dive Time", nbins = 15, 
                 labels = { "Dive Time":'Dive Time (minutes)', "count":  'Number of dives'}, 
                 template = "simple_white", title = "Dive time distribution:", 
@@ -256,12 +258,18 @@ app.layout = html.Div([
                 template = "simple_white", 
                 labels = {"Date" : "Year", "counts": "Number of Dives"}, title = "Dives per year:", 
                 color_discrete_sequence=px.colors.sequential.Aggrnyl)),
-
                 
                 #dcc.Graph(figure = px.scatter(dives, x = "Depth", y = "Dive Time"))
                 
                 
             ]),
+
+                
+              
+
+
+
+       
             dcc.Tab(label = 'Dive Log', children = [
             #    dash_table.DataTable(data = dives.to_dict('records'), columns=[{'name': i, 'id': i} for i in dives.columns[3:4]]),
             dash_table.DataTable(data = dives_simple.to_dict('records'), columns=[{'name': str(i), 'id': str(i)} for i in dives_simple.columns]),

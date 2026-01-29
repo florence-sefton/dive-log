@@ -218,10 +218,30 @@
 ## Dive 2: 14:40 - 15:33, 19.5m
 ## Obs: octopus, moray
 
-#  29-10-2025
+# 29-10-2025
 ## Location: Andifli, 07580 Kaş/Antalya, Türkiye
 ## Dive 1: 10:00 - 10:54, 20m
 ## Obs: green turtle, loggerhead turtle, grouper, nudibranch
 ## Dive 2: 12:10 - 13:07, 16.9m
 ## Obs: Moray, pufferfish
 
+# 15-01-2026
+## Location: Puerto Baquerizo Moreno 200101, Ecuador
+## Dive 1: 11:00 - 11:30, 10m
+## Obs: hammerhead, mobula, green turtle
+## Dive 2: 13:00 -  13:30, 10m
+## Obs: hammerhead, Green Turtle
+
+# 22-01-2026
+## Location: puerto ayora, santa cruz, islas galapagos, ecuador
+## Dive 1: 11:00 - 11:30, 10m
+## Obs: hammerhead, eagle ray, mobula, whitetip
+## Dive 2: 13:00 -  13:30, 10m
+## Obs: eagle ray  
+
+# 24-01-2026
+## Location: isla seymour norte, islas galapagos
+## Dive 1: 11:00 - 11:30, 10m
+## Obs: whitetip, eagle ray, mobula
+## Dive 2: 13:00 -  13:30, 10m
+## Obs: garden eel, hammerhead, eagle ray
